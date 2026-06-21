@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chris Fitness — Calculadora de Calorías y Macros</title>
+<meta name="description" content="Calcula tus calorías y macros personalizados en base a tu edad, peso, altura y objetivo. Recibe tu plan en tu correo.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== FONDO AMBIENTAL ===================== -->
+<div class="grain"></div>
+<div class="glow glow--1"></div>
+<div class="glow glow--2"></div>
+
+<!-- ===================== NAV ===================== -->
+<header class="nav">
+  <div class="nav__mark">CHRIS<span>FITNESS</span></div>
+  <div class="nav__tag">Calculadora de plan nutricional</div>
+</header>
+
+<main>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <p class="hero__eyebrow">Recomposición corporal · Plan personalizado</p>
+    <h1 class="hero__title">
+      Tu cuerpo no necesita<br>
+      <span class="hero__title-accent">otra dieta genérica.</span>
+    </h1>
+    <p class="hero__sub">
+      Mete tus datos reales. Mueve el slider hasta tu objetivo.
+      Te calculo las calorías y los macros exactos para llegar — sin adivinar.
+    </p>
+    <a href="#calculadora" class="hero__cta">Calcular mi plan ↓</a>
+  </section>
+
+  <!-- ===================== CALCULADORA ===================== -->
+  <section class="calc" id="calculadora">
+
+    <div class="calc__panel">
+
+      <div class="calc__head">
+        <span class="calc__step">PASO 1</span>
+        <h2>Tus datos</h2>
+      </div>
+
+      <!-- Sexo -->
+      <div class="field">
+        <label class="field__label">Sexo biológico</label>
+        <div class="toggle-group" id="sexGroup">
+          <button type="button" class="toggle-btn is-active" data-value="male">Hombre</button>
+          <button type="button" class="toggle-btn" data-value="female">Mujer</button>
+        </div>
+      </div>
+
+      <!-- Edad / Peso / Altura -->
+      <div class="field-grid">
+        <div class="field">
+          <label class="field__label" for="age">Edad</label>
+          <div class="input-unit">
+            <input type="number" id="age" inputmode="numeric" placeholder="28" min="14" max="90">
+            <span class="input-unit__suffix">años</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field__label" for="weight">Peso actual</label>
+          <div class="input-unit">
+            <input type="number" id="weight" inputmode="decimal" placeholder="78" min="30" max="250" step="0.1">
+            <span class="input-unit__suffix">kg</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field__label" for="height">Altura</label>
+          <div class="input-unit">
+            <input type="number" id="height" inputmode="numeric" placeholder="178" min="120" max="230">
+            <span class="input-unit__suffix">cm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actividad -->
+      <div class="field">
+        <label class="field__label">Nivel de actividad</label>
+        <div class="select-wrap">
+          <select id="activity">
+            <option value="1.2">Sedentario — apenas me muevo, trabajo de oficina</option>
+            <option value="1.375" selected>Ligero — entreno 1–3 días/semana</option>
+            <option value="1.55">Moderado — entreno 3–5 días/semana</option>
+            <option value="1.725">Alto — entreno 6–7 días/semana</option>
+            <option value="1.9">Muy alto — entreno intenso + trabajo físico</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="calc__head calc__head--spaced">
+        <span class="calc__step">PASO 2</span>
+        <h2>Tu objetivo</h2>
+      </div>
+
+      <!-- Objetivo -->
+      <div class="field">
+        <label class="field__label">¿Qué buscas?</label>
+        <div class="toggle-group toggle-group--3" id="goalGroup">
+          <button type="button" class="toggle-btn" data-value="lose">Perder grasa</button>
+          <button type="button" class="toggle-btn is-active" data-value="maintain">Mantener</button>
+          <button type="button" class="toggle-btn" data-value="gain">Ganar músculo</button>
+        </div>
+      </div>
+
+      <!-- Slider de ritmo semanal -->
+      <div class="field" id="paceField">
+        <label class="field__label">
+          Ritmo semanal
+          <span class="field__hint">Desliza para fijar cuánto quieres cambiar tu peso cada semana</span>
+        </label>
+
+        <div class="slider-block">
+          <div class="slider-block__readout">
+            <span id="paceValue">0.5</span><span class="slider-block__unit">kg / semana</span>
+          </div>
+
+          <input type="range" id="paceSlider" min="0" max="10" step="1" value="3">
+
+          <div class="slider-block__ticks" id="paceTicks"></div>
+          <p class="slider-block__note" id="paceNote">Ritmo moderado — recomendado para la mayoría</p>
+        </div>
+      </div>
+
+      <button class="calc__submit" id="calcBtn">
+        <span>Calcular mis calorías y macros</span>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9H15M15 9L10 4M15 9L10 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <p class="calc__error" id="formError"></p>
+
+    </div>
+
+    <!-- ===================== RESULTADOS ===================== -->
+    <div class="result" id="resultPanel">
+
+      <div class="result__locked" id="resultLocked">
+        <div class="result__locked-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><rect x="4" y="11" width="16" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 11V7a4 4 0 018 0v4" stroke="currentColor" stroke-width="1.5"/></svg>
+        </div>
+        <p>Tu plan aparece aquí en cuanto completes tus datos</p>
+      </div>
+
+      <div class="result__content" id="resultContent">
+
+        <div class="result__top">
+          <span class="result__eyebrow" id="resultGoalLabel">TU PLAN</span>
+          <h3 class="result__kcal"><span id="kcalValue">0</span><span class="result__kcal-unit">kcal / día</span></h3>
+          <p class="result__sub" id="resultExplain"></p>
+        </div>
+
+        <div class="result__macros">
+          <div class="macro-card macro-card--protein">
+            <span class="macro-card__label">Proteína</span>
+            <span class="macro-card__value"><span id="proteinG">0</span>g</span>
+            <span class="macro-card__kcal" id="proteinKcal">0 kcal</span>
+            <div class="macro-card__bar"><div class="macro-card__bar-fill" id="proteinBar"></div></div>
+          </div>
+          <div class="macro-card macro-card--carbs">
+            <span class="macro-card__label">Carbohidratos</span>
+            <span class="macro-card__value"><span id="carbsG">0</span>g</span>
+            <span class="macro-card__kcal" id="carbsKcal">0 kcal</span>
+            <div class="macro-card__bar"><div class="macro-card__bar-fill" id="carbsBar"></div></div>
+          </div>
+          <div class="macro-card macro-card--fat">
+            <span class="macro-card__label">Grasas</span>
+            <span class="macro-card__value"><span id="fatG">0</span>g</span>
+            <span class="macro-card__kcal" id="fatKcal">0 kcal</span>
+            <div class="macro-card__bar"><div class="macro-card__bar-fill" id="fatBar"></div></div>
+          </div>
+        </div>
+
+        <div class="result__meta">
+          <div class="result__meta-item">
+            <span>Mantenimiento</span>
+            <strong id="tdeeValue">0 kcal</strong>
+          </div>
+          <div class="result__meta-item">
+            <span>Tiempo estimado al objetivo</span>
+            <strong id="etaValue">—</strong>
+          </div>
+        </div>
+
+        <!-- Email capture -->
+        <div class="email-gate" id="emailGate">
+          <div class="email-gate__divider"><span>Recibe tu dieta completa</span></div>
+          <p class="email-gate__copy">Te mando tu plan detallado con reparto de comidas, alimentos recomendados y ajustes según tu progreso.</p>
+
+          <form id="emailForm" class="email-gate__form">
+            <input type="email" id="emailInput" placeholder="tucorreo@ejemplo.com" required autocomplete="email">
+            <button type="submit" id="emailSubmitBtn">
+              <span>Enviarme mi plan</span>
+            </button>
+          </form>
+          <p class="email-gate__fine">Sin spam. Solo tu plan y seguimiento de Chris Fitness.</p>
+          <p class="email-gate__status" id="emailStatus"></p>
+        </div>
+
+        <div class="email-gate__success" id="emailSuccess">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M8 12.5L10.5 15L16 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h4>Listo. Revisa tu correo.</h4>
+          <p>Tu plan con macros, comidas y seguimiento llega en breve. Si no lo ves, revisa spam.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="nav__mark nav__mark--footer">CHRIS<span>FITNESS</span></div>
+  <p>© 2026 Chris Fitness. Entrenamiento y nutrición personalizados.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
