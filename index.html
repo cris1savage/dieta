@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chris Fitness — Calculadora de Calorías y Macros</title>
-<meta name="description" content="Calcula tus calorías y macros personalizados en base a tu edad, peso, altura y objetivo. Recibe tu plan en tu correo.">
+<meta name="description" content="Calcula tus calorías y macros personalizados en base a tu edad, peso, altura y objetivo. Recibe ideas de menú al instante.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -191,30 +191,38 @@
           </div>
         </div>
 
-        <!-- Email capture -->
-        <div class="email-gate" id="emailGate">
-          <div class="email-gate__divider"><span>Recibe tu dieta completa</span></div>
-          <p class="email-gate__copy">Te mando tu plan detallado con reparto de comidas, alimentos recomendados y ajustes según tu progreso.</p>
-
-          <form id="emailForm" class="email-gate__form">
-            <input type="email" id="emailInput" placeholder="tucorreo@ejemplo.com" required autocomplete="email">
-            <button type="submit" id="emailSubmitBtn">
-              <span>Enviarme mi plan</span>
-            </button>
-          </form>
-          <p class="email-gate__fine">Sin spam. Solo tu plan y seguimiento de Chris Fitness.</p>
-          <p class="email-gate__status" id="emailStatus"></p>
-        </div>
-
-        <div class="email-gate__success" id="emailSuccess">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M8 12.5L10.5 15L16 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <h4>Listo. Revisa tu correo.</h4>
-          <p>Tu plan con macros, comidas y seguimiento llega en breve. Si no lo ves, revisa spam.</p>
-        </div>
-
       </div>
     </div>
 
+  </section>
+
+  <!-- ===================== MENÚ DE COMIDAS ===================== -->
+  <section class="menu" id="menuSection">
+    <div class="menu__head">
+      <span class="calc__step">PASO 3</span>
+      <h2>Aquí te dejo varias ideas de menús</h2>
+      <p class="menu__sub">No es tu plan 100% personalizado — son ejemplos para que veas cómo encajar tus macros. Para algo hecho a tu medida, hablamos.</p>
+    </div>
+
+    <div class="menu__tabs" id="menuTabs"></div>
+    <div class="menu__board" id="menuBoard"></div>
+    <button type="button" class="menu__refresh" id="menuRefreshBtn">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M13.5 8a5.5 5.5 0 11-1.6-3.9M13.5 2v3.5H10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Generar otras opciones</span>
+    </button>
+
+    <!-- WhatsApp CTA: siguiente nivel -->
+    <div class="wa-cta">
+      <div class="wa-cta__icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8.86 8.86 0 0012.04 3.5a8.93 8.93 0 00-7.74 13.4L3.5 21l4.22-1.1a8.92 8.92 0 004.32 1.1h.01a8.93 8.93 0 008.93-8.93 8.86 8.86 0 00-2.78-5.75zm-5.56 13.7h-.01a7.4 7.4 0 01-3.78-1.04l-.27-.16-2.81.74.75-2.74-.18-.28a7.43 7.43 0 1113.78-3.92 7.44 7.44 0 01-7.48 7.4zm4.08-5.56c-.22-.11-1.32-.65-1.53-.73-.2-.07-.35-.11-.5.11-.15.22-.57.73-.7.88-.13.15-.26.16-.48.05-.22-.11-.94-.35-1.79-1.1-.66-.59-1.1-1.32-1.23-1.54-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.39.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.05-.11-.5-1.2-.68-1.65-.18-.43-.36-.37-.5-.38h-.43c-.15 0-.39.05-.59.28-.2.22-.78.76-.78 1.85 0 1.09.8 2.15.91 2.3.11.15 1.57 2.4 3.81 3.36.53.23.95.37 1.27.47.53.17 1.02.15 1.4.09.43-.06 1.32-.54 1.5-1.06.19-.52.19-.96.13-1.06-.06-.09-.2-.15-.42-.26z"/></svg>
+      </div>
+      <h4 class="wa-cta__title">¿Quieres llevarlo al siguiente nivel?</h4>
+      <p class="wa-cta__copy">Estos menús son una idea de partida. Si quieres un plan 100% adaptado a ti, con seguimiento real y ajustes semanales, hablamos por WhatsApp.</p>
+      <a href="https://wa.me/message/N67CCCESBR3SO1" target="_blank" rel="noopener" class="wa-cta__btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8.86 8.86 0 0012.04 3.5a8.93 8.93 0 00-7.74 13.4L3.5 21l4.22-1.1a8.92 8.92 0 004.32 1.1h.01a8.93 8.93 0 008.93-8.93 8.86 8.86 0 00-2.78-5.75zm-5.56 13.7h-.01a7.4 7.4 0 01-3.78-1.04l-.27-.16-2.81.74.75-2.74-.18-.28a7.43 7.43 0 1113.78-3.92 7.44 7.44 0 01-7.48 7.4zm4.08-5.56c-.22-.11-1.32-.65-1.53-.73-.2-.07-.35-.11-.5.11-.15.22-.57.73-.7.88-.13.15-.26.16-.48.05-.22-.11-.94-.35-1.79-1.1-.66-.59-1.1-1.32-1.23-1.54-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.39.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.05-.11-.5-1.2-.68-1.65-.18-.43-.36-.37-.5-.38h-.43c-.15 0-.39.05-.59.28-.2.22-.78.76-.78 1.85 0 1.09.8 2.15.91 2.3.11.15 1.57 2.4 3.81 3.36.53.23.95.37 1.27.47.53.17 1.02.15 1.4.09.43-.06 1.32-.54 1.5-1.06.19-.52.19-.96.13-1.06-.06-.09-.2-.15-.42-.26z"/></svg>
+        <span>Hablar con Chris por WhatsApp</span>
+      </a>
+    </div>
   </section>
 
 </main>
@@ -224,6 +232,7 @@
   <p>© 2026 Chris Fitness. Entrenamiento y nutrición personalizados.</p>
 </footer>
 
+<script src="meals.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

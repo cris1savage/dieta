@@ -1,36 +1,28 @@
 # Chris Fitness — Calculadora de Calorías y Macros
 
-Web estática (HTML/CSS/JS puro, sin frameworks ni build) que calcula calorías y macros personalizados a partir de edad, peso, altura, actividad y objetivo, y captura el email del usuario para enviarle su plan completo.
+Web estática (HTML/CSS/JS puro, sin frameworks ni build) que calcula calorías y macros personalizados a partir de edad, peso, altura, actividad y objetivo, genera ideas de menú al instante, y dirige al usuario a WhatsApp para un plan 100% personalizado. No almacena ningún dato del usuario — todo el cálculo ocurre en su propio navegador.
 
 ## Estructura
 
 ```
 /
 ├── index.html      → estructura de la página
-├── style.css       → estilos (tema oscuro, acento naranja Chris Fitness)
-├── script.js       → lógica de cálculo + envío de email
+├── style.css       → estilos (tema claro, acento naranja Chris Fitness)
+├── meals.js        → base de alimentos + generador de menús
+├── script.js       → lógica de cálculo de calorías/macros
 └── README.md
 ```
 
 No requiere `npm install` ni proceso de build. Es HTML/CSS/JS plano.
 
-## ⚠️ Antes de publicar: conecta el formulario de email
+## Cómo funciona
 
-Ahora mismo el formulario de email funciona visualmente pero **no envía nada a ningún sitio** hasta que lo conectes:
+1. El usuario mete edad, peso, altura, sexo, actividad y objetivo (con el slider de ritmo semanal).
+2. Se calculan sus calorías de mantenimiento (Harris-Benedict) y objetivo según su meta, más sus macros (proteína por kg de peso corporal).
+3. Se generan 3 ideas de menú (desayuno/comida/cena) que encajan con esos macros, usando una base de alimentos reales. El usuario puede regenerar otras opciones si quiere.
+4. Al final, un botón le lleva directo a tu WhatsApp para pedir un plan 100% personalizado.
 
-1. Crea una cuenta gratis en **[formspree.io](https://formspree.io)** (plan gratis: 50 envíos/mes).
-2. Crea un formulario nuevo. Te dará una URL tipo:
-   `https://formspree.io/f/abcd1234`
-3. Abre `script.js`, busca esta línea (cerca de la mitad del archivo):
-   ```js
-   const FORMSPREE_ENDPOINT = 'https://formspree.io/f/TU_ID_AQUI';
-   ```
-4. Sustituye `TU_ID_AQUI` por tu endpoint real.
-5. Guarda y vuelve a subir el cambio (commit + push).
-
-Cada vez que alguien complete el formulario, te llegará un email a la cuenta con la que creaste Formspree, con: email del usuario, objetivo, calorías, macros, peso, altura, edad y ritmo semanal elegido. Desde el panel de Formspree puedes exportarlo a CSV también.
-
-> Si en el futuro quieres conectar esto a un CRM o a tu lista de email marketing (Mailchimp, Brevo, etc.), solo hay que cambiar esa URL por el endpoint correspondiente — el resto del código no cambia.
+Nada de esto se envía a ningún servidor — todo el cálculo y la generación de menús ocurre en el navegador del propio usuario, así que no hay datos que almacenar ni gestionar.
 
 ## Cómo subir esto a GitHub
 
@@ -71,3 +63,5 @@ Si quieres usar tu propio dominio (ej. `calculadora.chrisfitness.com`), en el pr
 - **Cambiar la fórmula de calorías**: función `calcBMR()` en `script.js` (actualmente Harris-Benedict).
 - **Cambiar gramos de proteína/grasa por kg**: funciones `proteinPerKg()` y `fatPerKg()` en `script.js`.
 - **Cambiar el rango del slider de ritmo semanal**: array `PACE_STEPS` en `script.js` (actualmente 0.0 a 1.0 kg/semana).
+- **Cambiar tu enlace de WhatsApp**: en `index.html`, busca `wa.me/message/` (aparece dos veces, en el `href` del botón) y sustituye por tu enlace.
+- **Añadir o quitar alimentos del menú**: en `meals.js`, dentro de `FOODS` (comida/cena) y `BREAKFAST_FOODS` (desayuno). Cada alimento lleva sus macros por 100g y una ración mínima/máxima realista.

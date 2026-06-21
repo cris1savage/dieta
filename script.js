@@ -238,6 +238,78 @@ function renderResult(plan) {
   resultContent.classList.add('is-visible');
 }
 
+// ---------- menú de comidas ----------
+const menuSection = document.getElementById('menuSection');
+const menuTabs = document.getElementById('menuTabs');
+const menuBoard = document.getElementById('menuBoard');
+
+const MEAL_LABELS = { breakfast: 'Desayuno', lunch: 'Comida', dinner: 'Cena' };
+let currentMealOptions = [];
+
+function renderMealCard(mealKey, meal) {
+  const itemsHtml = meal.items.map(it => `
+    <div class="meal-card__item">
+      <span class="meal-card__item-name">${it.name}</span>
+      <span class="meal-card__item-grams">${it.grams}g</span>
+    </div>
+  `).join('');
+
+  return `
+    <div class="meal-card">
+      <div class="meal-card__head">
+        <h4 class="meal-card__title">${MEAL_LABELS[mealKey]}</h4>
+        <span class="meal-card__kcal">${meal.totals.kcal.toLocaleString('es-ES')} kcal</span>
+      </div>
+      <div class="meal-card__items">${itemsHtml}</div>
+      <div class="meal-card__macros">
+        <span>Proteína <b>${meal.totals.p}g</b></span>
+        <span>Carbos <b>${meal.totals.c}g</b></span>
+        <span>Grasas <b>${meal.totals.f}g</b></span>
+      </div>
+    </div>
+  `;
+}
+
+function renderMenuOption(index) {
+  const opt = currentMealOptions[index];
+  if (!opt) return;
+
+  const cardsHtml = ['breakfast', 'lunch', 'dinner'].map(key => renderMealCard(key, opt[key])).join('');
+
+  menuBoard.innerHTML = `
+    ${cardsHtml}
+    <div class="menu__daytotal">
+      <div class="menu__daytotal-item"><span>Calorías</span><strong>${opt.dayTotals.kcal.toLocaleString('es-ES')}</strong></div>
+      <div class="menu__daytotal-item"><span>Proteína</span><strong>${opt.dayTotals.p}g</strong></div>
+      <div class="menu__daytotal-item"><span>Carbos</span><strong>${opt.dayTotals.c}g</strong></div>
+      <div class="menu__daytotal-item"><span>Grasas</span><strong>${opt.dayTotals.f}g</strong></div>
+    </div>
+  `;
+
+  [...menuTabs.children].forEach((tab, i) => tab.classList.toggle('is-active', i === index));
+}
+
+function renderMenu(plan) {
+  currentMealOptions = generateMealOptions(plan.proteinG, plan.carbsG, plan.fatG, 3);
+
+  menuTabs.innerHTML = currentMealOptions.map((_, i) => `
+    <button type="button" class="menu-tab" data-index="${i}">Opción ${i + 1}</button>
+  `).join('');
+
+  [...menuTabs.children].forEach((tab, i) => {
+    tab.addEventListener('click', () => renderMenuOption(i));
+  });
+
+  renderMenuOption(0);
+  menuSection.classList.add('is-visible');
+}
+
+const menuRefreshBtn = document.getElementById('menuRefreshBtn');
+menuRefreshBtn.addEventListener('click', () => {
+  if (!lastPlan) return;
+  renderMenu(lastPlan);
+});
+
 // ---------- submit ----------
 calcBtn.addEventListener('click', () => {
   const error = validate();
@@ -248,73 +320,10 @@ calcBtn.addEventListener('click', () => {
   formError.textContent = '';
   const plan = calculatePlan();
   renderResult(plan);
+  renderMenu(plan);
 
   // scroll suave hacia el resultado en móvil
   if (window.innerWidth < 980) {
     document.getElementById('resultPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-});
-
-// ---------- captura de email (Formspree) ----------
-// ⚠️ IMPORTANTE: sustituye la URL de abajo por tu propio endpoint de Formspree.
-// 1. Crea cuenta gratis en https://formspree.io
-// 2. Crea un formulario nuevo y copia el endpoint (https://formspree.io/f/XXXXXXX)
-// 3. Pega esa URL aquí abajo:
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/TU_ID_AQUI';
-
-const emailForm = document.getElementById('emailForm');
-const emailInput = document.getElementById('emailInput');
-const emailSubmitBtn = document.getElementById('emailSubmitBtn');
-const emailStatus = document.getElementById('emailStatus');
-const emailGate = document.getElementById('emailGate');
-const emailSuccess = document.getElementById('emailSuccess');
-
-emailForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  if (!lastPlan) return;
-
-  const email = emailInput.value.trim();
-  if (!email) return;
-
-  emailSubmitBtn.disabled = true;
-  emailSubmitBtn.querySelector('span').textContent = 'Enviando...';
-  emailStatus.textContent = '';
-
-  const payload = {
-    email,
-    objetivo: GOAL_LABELS[lastPlan.goal],
-    calorias_objetivo: lastPlan.targetKcal,
-    tdee: lastPlan.tdee,
-    proteina_g: lastPlan.proteinG,
-    carbohidratos_g: lastPlan.carbsG,
-    grasas_g: lastPlan.fatG,
-    ritmo_semanal_kg: lastPlan.paceKg,
-    sexo: state.sex,
-    edad: ageInput.value,
-    peso_kg: weightInput.value,
-    altura_cm: heightInput.value,
-  };
-
-  try {
-    if (FORMSPREE_ENDPOINT.includes('TU_ID_AQUI')) {
-      // Endpoint no configurado todavía: simulamos éxito para no romper la demo,
-      // pero avisamos por consola para que Chris lo configure.
-      console.warn('⚠️ Configura FORMSPREE_ENDPOINT en script.js para capturar emails de verdad.');
-      await new Promise(r => setTimeout(r, 600));
-    } else {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error('Error en el envío');
-    }
-
-    emailGate.style.display = 'none';
-    emailSuccess.classList.add('is-visible');
-  } catch (err) {
-    emailStatus.textContent = 'No se pudo enviar. Inténtalo de nuevo en unos segundos.';
-    emailSubmitBtn.disabled = false;
-    emailSubmitBtn.querySelector('span').textContent = 'Enviarme mi plan';
   }
 });
